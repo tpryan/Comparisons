@@ -1,5 +1,6 @@
 require 'mysql'
-require 'fileutils'  
+require 'fileutils'
+require "benchmark"  
 
 
 def cleanDir(path_to_clean)
@@ -9,7 +10,6 @@ end
 
 def cleanURL(url)
   url.gsub("blog//blog/index.php/", "").gsub("http://http://", "http://")
-  return url;
 end
 
 
@@ -28,7 +28,7 @@ def getEntries(mysql, sql)
     item['date'] = p['formatted_post_date']
     result.push(item);
   end
-  return result  
+  result  
 end
 
 
@@ -37,13 +37,14 @@ def writeEntries(entries, store_path)
 
   entries.each do |entry|
     item = ""
-    item << '<article>\n'
-    item << ' <h1><a href="#{entry["url"]}">#{entry["title"]}</a></h1>\n'
-    item << ' <time datetime="#{entry["post_date"]}">#{entry["date"]}</time>\n'
-    item << ' <div>\n'
-    item << '#entry["content"]\n' 
-    item << ' </div>\n'
-    item << '</article>\n'
+    item << "<article>\n"
+    item << " <h1><a href=\"#{entry["url"]}\">#{entry["title"]}</a></h1>\n"
+    item << " <time datetime=\"#{entry["post_date"]}\">#{entry["date"]}</time>\n"
+    item << " <div>\n"
+    item << entry['content']
+    item << "\n"
+    item << " </div>\n"
+    item << "</article>\n"
     filename = store_path + "/" + entry['name'] + ".html";
     File.open(filename, 'w') {|f| f.write(item) }
   end
@@ -67,28 +68,21 @@ con = Mysql.new(db['host'], db['user'], db['pass'], db['name'])
 
 cleanDir(output_path)
 
-
+entries = []
 time = Benchmark.realtime do
   entries = getEntries(con, sql)
 end
 puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " getEntries \t\t ElapsedTime in seconds: #{time}"
 
 
-
-
-time = Benchmark.realtime do
-  for i in 1..loopcount do
-     writeEntries(entries, output_path + "/" +  i.to_s)
-  end
+times = []
+for i in 1..loopcount do
+  time = Benchmark.realtime do
+    writeEntries(entries, output_path + "/" +  i.to_s)
+  end  
+  times.push(time)
 end
-puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " getEntries \t\t ElapsedTime in seconds: #{time}"
-
-
-
+avg = times.reduce(:+) / times.size.to_f
+puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " writeEntries  \t ElapsedTime in seconds: #{avg}"
  
 con.close 
-
-
-
-
-
