@@ -3,49 +3,49 @@ require 'fileutils'
 
 
 def cleanDir(path_to_clean)
-	FileUtils.rm_rf(path_to_clean) 
-	Dir.mkdir(path_to_clean,0777)
+  FileUtils.rm_rf(path_to_clean) 
+  Dir.mkdir(path_to_clean,0777)
 end
 
 def cleanURL(url)
-	url.gsub("blog//blog/index.php/", "").gsub("http://http://", "http://")
-	return url;
+  url.gsub("blog//blog/index.php/", "").gsub("http://http://", "http://")
+  return url;
 end
 
 
 def getEntries(mysql, sql)
-	rs = mysql.query(sql) 
-	result = []
+  rs = mysql.query(sql) 
+  result = []
 
-	rs.each_hash do |p| 
-		item = Hash.new
-		item['title'] = p['post_title']
-		item['name'] = p['post_name']
-		item['post_date'] = p['post_date']
-		item['excerpt'] = p['post_excerpt']
-		item['url'] = cleanURL(p['guid'])
-		item['content'] = p['post_content']
-		item['date'] = p['formatted_post_date']
-		result.push(item);
-	end
-	return result  
+  rs.each_hash do |p| 
+    item = Hash.new
+    item['title'] = p['post_title']
+    item['name'] = p['post_name']
+    item['post_date'] = p['post_date']
+    item['excerpt'] = p['post_excerpt']
+    item['url'] = cleanURL(p['guid'])
+    item['content'] = p['post_content']
+    item['date'] = p['formatted_post_date']
+    result.push(item);
+  end
+  return result  
 end
 
 
 def writeEntries(entries, store_path)
-	Dir.mkdir(store_path,0777);
+  Dir.mkdir(store_path,0777);
 
-	entries.each do |entry|
-		item = '<article>'+ "\n" +
-		'	<h1><a href="' + entry['url'] + '">' + entry['title'] +'</a></h1>'+ "\n" +
-		'	<time datetime="' + entry['post_date'] + '">' + entry['date'] + '</time>'+ "\n" +
-		'	<div>' + "\n" +
-		entry['content'] + "\n" +
-		'	</div>'+ "\n" +
-		'</article>'+ "\n"
-		filename = store_path + "/" + entry['name'] + ".html";
-		File.open(filename, 'w') {|f| f.write(item) }
-	end
+  entries.each do |entry|
+    item = '<article>'+ "\n" +
+    ' <h1><a href="' + entry['url'] + '">' + entry['title'] +'</a></h1>'+ "\n" +
+    ' <time datetime="' + entry['post_date'] + '">' + entry['date'] + '</time>'+ "\n" +
+    ' <div>' + "\n" +
+    entry['content'] + "\n" +
+    ' </div>'+ "\n" +
+    '</article>'+ "\n"
+    filename = store_path + "/" + entry['name'] + ".html";
+    File.open(filename, 'w') {|f| f.write(item) }
+  end
 
 end
 
