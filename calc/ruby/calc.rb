@@ -37,32 +37,32 @@ def writeRoutes(routes, store_path)
   routeText = []
   routeText.push("<table>"+ "\n")
   
-  routeText.push( ' <tr>'+ "\n" +
-    "   <th>Airline</th>" + "\n" +
-    "   <th>Origin Aiport Code</th>" + "\n" +
-    "   <th>Origin Aiport Name</th>" + "\n" +
-    "   <th>Origin Latitude</th>" + "\n" +
-    "   <th>Origin Longitude</th>" + "\n" +
-    "   <th>Destination Aiport Code</th>" + "\n" +
-    "   <th>Destination Aiport Name</th>" + "\n" +
-    "   <th>Destination Latitude</th>" + "\n" +
-    "   <th>Destination Longitude</th>" + "\n" +
-    "   <th>Distance</th>" + "\n" +
-    ' </tr>'+ "\n")
+  routeText.push("<tr>\n")
+  routeText.push("   <th>Airline</th>" + "\n")
+  routeText.push("   <th>Origin Aiport Code</th>" + "\n")
+  routeText.push("   <th>Origin Aiport Name</th>" + "\n")
+  routeText.push("   <th>Origin Latitude</th>" + "\n")
+  routeText.push("   <th>Origin Longitude</th>" + "\n")
+  routeText.push("   <th>Destination Aiport Code</th>" + "\n")
+  routeText.push("   <th>Destination Aiport Name</th>" + "\n")
+  routeText.push("   <th>Destination Latitude</th>" + "\n")
+  routeText.push("   <th>Destination Longitude</th>" + "\n")
+  routeText.push("   <th>Distance</th>" + "\n")
+  routeText.push("</tr>\n")
 
   routes.each do |route|
-    routeText.push("  <tr>"+ "\n" +
-    "   <td>#{route['airline']}</td>\n" +
-    "   <td>#{route['source_code']}</td>\n" +
-    "   <td>#{route['source_name']}</td>\n" +
-    "   <td>#{route['source_lat']}</td>\n" +
-    "   <td>#{route['source_lon']}</td>\n" +
-    "   <td>#{route['dest_code']}</td>\n" +
-    "   <td>#{route['dest_name']}</td>\n" +
-    "   <td>#{route['dest_lat']}</td>\n" +
-    "   <td>#{route['dest_lon']}</td>\n" +
-    "   <td>#{route['distance'].to_s}</td>\n" +
-    " </tr>"+ "\n")
+    routeText.push("  <tr>"+ "\n")
+    routeText.push("   <td>#{route['airline']}</td>\n")
+    routeText.push("   <td>#{route['source_code']}</td>\n")
+    routeText.push("   <td>#{route['source_name']}</td>\n")
+    routeText.push( "   <td>#{route['source_lat']}</td>\n")
+    routeText.push("   <td>#{route['source_lon']}</td>\n")
+    routeText.push("   <td>#{route['dest_code']}</td>\n")
+    routeText.push("   <td>#{route['dest_name']}</td>\n")
+    routeText.push("   <td>#{route['dest_lat']}</td>\n")
+    routeText.push("   <td>#{route['dest_lon']}</td>\n")
+    routeText.push("   <td>#{route['distance'].to_s}</td>\n")
+    routeText.push(" </tr>"+ "\n")
   end
 
   routeText.push( "</table>"+ "\n")
