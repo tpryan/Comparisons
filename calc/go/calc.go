@@ -39,48 +39,40 @@ type Route struct {
 func main() {
 	var err error
 
-	loopcount, err := strconv.Atoi(os.Args[1])
-	if err != nil {
+	if loopcount, err := strconv.Atoi(os.Args[1]); err != nil {
 		log.Fatal(err)
 	}
 
 	SQLhost := os.Getenv("OF_USER") + ":" + os.Getenv("OF_PASS") + "@tcp(" + os.Getenv("OF_HOST") + ":3306)/" + os.Getenv("OF_NAME")
 
-	db, err = sql.Open(sqldriver, SQLhost+"?parseTime=true")
-	if err != nil {
+	if db, err = sql.Open(sqldriver, SQLhost); err != nil {
 		log.Fatal(err)
 	}
 
-	wd, err := os.Getwd()
-	if err != nil {
+	if wd, err := os.Getwd(); err != nil {
 		log.Fatal(err)
 	}
 
 	outdir := wd + "/calc/output/go/"
 
-	err = cleanDir(outdir)
-	if err != nil {
+	if err = cleanDir(outdir); err != nil {
 		log.Fatal(err)
 	}
 
-	b, err := ioutil.ReadFile(wd + "/calc/sql/prepstatement.sql")
-	if err != nil {
+	if b, err := ioutil.ReadFile(wd + "/calc/sql/prepstatement.sql"); err != nil {
 		log.Fatal(err)
 	}
 
 	RouteSQL := string(b)
-
 	RouteSQL += "\n" + "Limit 0," + strconv.Itoa(loopcount) + "\n"
 
-	Routes, err := getRoutes(RouteSQL)
-	if err != nil {
+	if Routes, err := getRoutes(RouteSQL); err != nil {
 		log.Fatal(err)
 	}
 
 	Routes = processRoutes(Routes)
 
-	err = writeRoutes(Routes, outdir+"/1")
-	if err != nil {
+	if err = writeRoutes(Routes, outdir+"/1"); err != nil {
 		log.Fatal(err)
 	}
 
@@ -144,13 +136,13 @@ func processRoutes(routes []Route) []Route {
 	return routes
 }
 
-func getDistance(lat1, lon1, lat2, lon2 float64) float64 {
+func getDistance(la1, lo1, la2, lo2 float64) float64 {
 	earth_radius := float64(3963)
 
-	dLat := deg2rad(lat2 - lat1)
-	dLon := deg2rad(lon2 - lon1)
+	dLat := deg2rad(la2 - la1)
+	dLon := deg2rad(lo2 - lo1)
 
-	a := math.Sin(dLat/2)*math.Sin(dLat/2) + math.Cos(deg2rad(lat1))*math.Cos(deg2rad(lat2))*math.Sin(dLon/2)*math.Sin(dLon/2)
+	a := math.Sin(dLat/2)*math.Sin(dLat/2) + math.Cos(deg2rad(la1))*math.Cos(deg2rad(la2))*math.Sin(dLon/2)*math.Sin(dLon/2)
 	c := 2 * math.Asin(math.Sqrt(a))
 	d := earth_radius * c
 
@@ -159,15 +151,6 @@ func getDistance(lat1, lon1, lat2, lon2 float64) float64 {
 
 func deg2rad(deg float64) float64 {
 	return deg * math.Pi / 180
-}
-
-func writeSeq(routes []Route, outdir string, count int) error {
-	for i := 1; i <= count; i++ {
-		if err := writeRoutes(routes, outdir+strconv.Itoa(i)); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func getRoutes(RouteSQL string) ([]Route, error) {
@@ -196,13 +179,11 @@ func getRoutes(RouteSQL string) ([]Route, error) {
 }
 
 func cleanDir(dir string) error {
-
 	if err := os.RemoveAll(dir); err != nil {
 		return err
 	}
 
 	err := os.Mkdir(dir, 0777)
-
 	return err
 }
 
