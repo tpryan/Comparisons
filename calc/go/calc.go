@@ -33,7 +33,8 @@ type Route struct {
 func main() {
 	var err error
 
-	if loopcount, err := strconv.Atoi(os.Args[1]); err != nil {
+	max, err := strconv.Atoi(os.Args[1])
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -43,7 +44,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if wd, err := os.Getwd(); err != nil {
+	wd, err := os.Getwd()
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -53,14 +55,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if b, err := ioutil.ReadFile(wd + "/calc/sql/prepstatement.sql"); err != nil {
+	b, err := ioutil.ReadFile(wd + "/calc/sql/prepstatement.sql")
+	if err != nil {
 		log.Fatal(err)
 	}
 
 	RouteSQL := string(b)
-	RouteSQL += "\n" + "Limit 0," + strconv.Itoa(loopcount) + "\n"
+	RouteSQL += "\n" + "Limit 0," + strconv.Itoa(max) + "\n"
 
-	if Routes, err := getRoutes(RouteSQL); err != nil {
+	Routes, err := getRoutes(RouteSQL)
+	if err != nil {
 		log.Fatal(err)
 	}
 
