@@ -1,5 +1,6 @@
 <?php
 
+ini_set('memory_limit', '8186M');
 $loopcount = $argv[1];
 
 $db['user'] = getenv("OF_USER");
