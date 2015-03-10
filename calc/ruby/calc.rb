@@ -9,7 +9,7 @@ def cleanDir(path_to_clean)
 end
 
 def deg2rad(deg)  
-	return deg * Math::PI / 180
+	deg * Math::PI / 180
 end
 
 def getDistance(lat1, lon1, lat2, lon2) 
@@ -21,15 +21,12 @@ def getDistance(lat1, lon1, lat2, lon2)
 	a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(deg2rad(lat1))*Math.cos(deg2rad(lat2))*Math.sin(dLon/2)*Math.sin(dLon/2)
 	c = 2 * Math.asin(Math.sqrt(a))
 	d = earth_radius * c
-
-	return d
 end
 
 def processRoutes(routes)
 	routes.each do |r|
 		r['distance'] = getDistance(r['source_lat'].to_f,r['source_lon'].to_f,r['dest_lat'].to_f,r['dest_lon'].to_f);
 	end
-	return routes;
 end
 
 
@@ -70,7 +67,7 @@ def writeRoutes(routes, store_path)
 
 	routeText.push( "</table>"+ "\n")
 	filename = store_path + "/table.html"
-	File.open(filename, 'w') {|f| f.write(routeText.join("\n")) }
+	File.open(filename, 'w') {|f| f.write(routeText.join("")) }
 end
 
 def getRoutes(mysql, sql)
@@ -89,9 +86,8 @@ def getRoutes(mysql, sql)
 		item['dest_lat'] = p['dest_lat']
 		item['dest_lon'] = p['dest_lon']
 		result.push(item);
-
 	end
-	return result  
+	result  
 end
 
 
