@@ -87,46 +87,46 @@ func main() {
 }
 
 func writeRoutes(routes []Route, path string) error {
-	defer un(trace("writeRoutes"))
+	defer un(trace("writeRoutes\t\t"))
 	if err := os.Mkdir(path, 0777); err != nil {
 		return err
 	}
 
-	var rText bytes.Buffer
+	var b bytes.Buffer
 
-	rText.WriteString("<table>" + "\n")
-	rText.WriteString("	<tr>" + "\n")
-	rText.WriteString("		<th>Airline</th>" + "\n")
-	rText.WriteString("		<th>Origin Aiport Code</th>" + "\n")
-	rText.WriteString("		<th>Origin Aiport Name</th>" + "\n")
-	rText.WriteString("		<th>Origin Latitude</th>" + "\n")
-	rText.WriteString("		<th>Origin Longitude</th>" + "\n")
-	rText.WriteString("		<th>Destination Aiport Code</th>" + "\n")
-	rText.WriteString("		<th>Destination Aiport Name</th>" + "\n")
-	rText.WriteString("		<th>Destination Latitude</th>" + "\n")
-	rText.WriteString("		<th>Destination Longitude</th>" + "\n")
-	rText.WriteString("		<th>Distance</th>" + "\n")
-	rText.WriteString("	</tr>" + "\n")
+	b.WriteString("<table>" + "\n")
+	b.WriteString("	<tr>" + "\n")
+	b.WriteString("		<th>Airline</th>" + "\n")
+	b.WriteString("		<th>Origin Aiport Code</th>" + "\n")
+	b.WriteString("		<th>Origin Aiport Name</th>" + "\n")
+	b.WriteString("		<th>Origin Latitude</th>" + "\n")
+	b.WriteString("		<th>Origin Longitude</th>" + "\n")
+	b.WriteString("		<th>Destination Aiport Code</th>" + "\n")
+	b.WriteString("		<th>Destination Aiport Name</th>" + "\n")
+	b.WriteString("		<th>Destination Latitude</th>" + "\n")
+	b.WriteString("		<th>Destination Longitude</th>" + "\n")
+	b.WriteString("		<th>Distance</th>" + "\n")
+	b.WriteString("	</tr>" + "\n")
 
 	for _, r := range routes {
-		rText.WriteString("	<tr>" + "\n")
-		rText.WriteString("		<td>" + r.Airline + "</td>" + "\n")
-		rText.WriteString("		<td>" + r.SCode + "</td>" + "\n")
-		rText.WriteString("		<td>" + r.SName + "</td>" + "\n")
-		rText.WriteString("		<td>" + strconv.FormatFloat(r.SLat, 'f', 8, 64) + "</td>" + "\n")
-		rText.WriteString("		<td>" + strconv.FormatFloat(r.SLon, 'f', 8, 64) + "</td>" + "\n")
-		rText.WriteString("		<td>" + r.DCode + "</td>" + "\n")
-		rText.WriteString("		<td>" + r.DName + "</td>" + "\n")
-		rText.WriteString("		<td>" + strconv.FormatFloat(r.DLat, 'f', 8, 64) + "</td>" + "\n")
-		rText.WriteString("		<td>" + strconv.FormatFloat(r.DLon, 'f', 8, 64) + "</td>" + "\n")
-		rText.WriteString("		<td>" + strconv.FormatFloat(r.Distance, 'f', 10, 64) + "</td>" + "\n")
-		rText.WriteString("	</tr>" + "\n")
+		b.WriteString("	<tr>" + "\n")
+		b.WriteString("		<td>" + r.Airline + "</td>" + "\n")
+		b.WriteString("		<td>" + r.SCode + "</td>" + "\n")
+		b.WriteString("		<td>" + r.SName + "</td>" + "\n")
+		b.WriteString("		<td>" + strconv.FormatFloat(r.SLat, 'f', 8, 64) + "</td>" + "\n")
+		b.WriteString("		<td>" + strconv.FormatFloat(r.SLon, 'f', 8, 64) + "</td>" + "\n")
+		b.WriteString("		<td>" + r.DCode + "</td>" + "\n")
+		b.WriteString("		<td>" + r.DName + "</td>" + "\n")
+		b.WriteString("		<td>" + strconv.FormatFloat(r.DLat, 'f', 8, 64) + "</td>" + "\n")
+		b.WriteString("		<td>" + strconv.FormatFloat(r.DLon, 'f', 8, 64) + "</td>" + "\n")
+		b.WriteString("		<td>" + strconv.FormatFloat(r.Distance, 'f', 10, 64) + "</td>" + "\n")
+		b.WriteString("	</tr>" + "\n")
 	}
 
-	rText.WriteString("</table>" + "\n")
+	b.WriteString("</table>" + "\n")
 	f := path + "/table.html"
 
-	if err := ioutil.WriteFile(f, rText.Bytes(), 0777); err != nil {
+	if err := ioutil.WriteFile(f, b.Bytes(), 0777); err != nil {
 		return err
 	}
 
@@ -135,14 +135,13 @@ func writeRoutes(routes []Route, path string) error {
 }
 
 func processRoutes(routes []Route) []Route {
-	defer un(trace("processRoutes"))
+	defer un(trace("processRoutes\t"))
 
 	for _, r := range routes {
 		r.Distance = getDistance(r.SLat, r.SLon, r.DLat, r.DLon)
 	}
 
 	return routes
-
 }
 
 func getDistance(lat1, lon1, lat2, lon2 float64) float64 {
@@ -164,8 +163,7 @@ func deg2rad(deg float64) float64 {
 
 func writeSeq(routes []Route, outdir string, count int) error {
 	for i := 1; i <= count; i++ {
-		err := writeRoutes(routes, outdir+strconv.Itoa(i))
-		if err != nil {
+		if err := writeRoutes(routes, outdir+strconv.Itoa(i)); err != nil {
 			return err
 		}
 	}
@@ -173,7 +171,7 @@ func writeSeq(routes []Route, outdir string, count int) error {
 }
 
 func getRoutes(RouteSQL string) ([]Route, error) {
-	defer un(trace("getRoutes"))
+	defer un(trace("getRoutes\t\t"))
 	rows, err := db.Query(RouteSQL)
 	if err != nil {
 		return nil, err
@@ -190,8 +188,7 @@ func getRoutes(RouteSQL string) ([]Route, error) {
 		res = append(res, r)
 	}
 
-	err = rows.Err()
-	if err != nil {
+	if rows.Err() != nil {
 		return nil, err
 	}
 
@@ -200,12 +197,11 @@ func getRoutes(RouteSQL string) ([]Route, error) {
 
 func cleanDir(dir string) error {
 
-	err := os.RemoveAll(dir)
-	if err != nil {
+	if err := os.RemoveAll(dir); err != nil {
 		return err
 	}
 
-	err = os.Mkdir(dir, 0777)
+	err := os.Mkdir(dir, 0777)
 
 	return err
 }
@@ -215,10 +211,6 @@ func trace(s string) (string, time.Time) {
 }
 
 func un(s string, startTime time.Time) {
-	t := "\t"
-	if len(s) < 10 {
-		t = "\t\t"
-	}
 	endTime := time.Now()
-	log.Println(s, t, "ElapsedTime in seconds:", endTime.Sub(startTime).Seconds())
+	log.Println(s, "ElapsedTime in seconds:", endTime.Sub(startTime).Seconds())
 }
