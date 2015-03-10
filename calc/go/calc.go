@@ -11,17 +11,11 @@ import (
 	"time"
 )
 
-import (
-	_ "github.com/go-sql-driver/mysql"
-)
+import _ "github.com/go-sql-driver/mysql"
 
-const (
-	sqldriver = "mysql"
-)
+const sqldriver = "mysql"
 
-var (
-	db *sql.DB
-)
+var db *sql.DB
 
 type Route struct {
 	Airline  string
