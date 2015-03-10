@@ -52,16 +52,16 @@ def writeRoutes(routes, store_path)
 
   routes.each do |route|
     routeText.push("  <tr>"+ "\n" +
-    "   <td>" + route['airline'] + "</td>" + "\n" +
-    "   <td>" + route['source_code'] + "</td>" + "\n" +
-    "   <td>" + route['source_name'] + "</td>" + "\n" +
-    "   <td>" + route['source_lat'] + "</td>" + "\n" +
-    "   <td>" + route['source_lon'] + "</td>" + "\n" +
-    "   <td>" + route['dest_code'] + "</td>" + "\n" +
-    "   <td>" + route['dest_name'] + "</td>" + "\n" +
-    "   <td>" + route['dest_lat'] + "</td>" + "\n" +
-    "   <td>" + route['dest_lon'] + "</td>" + "\n" +
-    "   <td>" + route['distance'].to_s + "</td>" + "\n" +
+    "   <td>#{route['airline']}</td>\n" +
+    "   <td>#{route['source_code']}</td>\n" +
+    "   <td>#{route['source_name']}</td>\n" +
+    "   <td>#{route['source_lat']}</td>\n" +
+    "   <td>#{route['source_lon']}</td>\n" +
+    "   <td>#{route['dest_code']}</td>\n" +
+    "   <td>#{route['dest_name']}</td>\n" +
+    "   <td>#{route['dest_lat']}</td>\n" +
+    "   <td>#{route['dest_lon']}</td>\n" +
+    "   <td>#{route['distance'].to_s}</td>\n" +
     " </tr>"+ "\n")
   end
 
