@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -186,17 +188,19 @@ func writeEntries(entries []Entry, path string) error {
 	}
 
 	for _, entry := range entries {
-		item := `<article>` + "\n" +
-			`	<h1><a href="` + repairURL(entry.GUID) + `">` + entry.Title + `</a></h1>` + "\n" +
-			`	<time datetime="` + entry.Date.Format("2006-01-02 15:04:05") + `">` + entry.DateF + `</time>` + "\n" +
-			`	<div>` + "\n" +
-			entry.Content + "\n" +
-			`	</div>` + "\n" +
-			`</article>` + "\n"
+		var b bytes.Buffer
+		b.WriteString("<article>\n")
+		b.WriteString(fmt.Sprintf(`<h1><a href="%s">%s</a></h1>%s`, repairURL(entry.GUID), entry.Title, "\n"))
+		b.WriteString(fmt.Sprintf(`<time datetime="%s">%s</a></h1>%s`, entry.Date.Format("2006-01-02 15:04:05"), entry.DateF, "\n"))
+		b.WriteString("	<div>\n")
+		b.WriteString(entry.Content)
+		b.WriteString("\n")
+		b.WriteString("	</div>\n")
+		b.WriteString("</article>\n")
 
 		f := path + "/" + entry.Name + ".html"
 
-		if err := ioutil.WriteFile(f, []byte(item), 0777); err != nil {
+		if err := ioutil.WriteFile(f, b.Bytes(), 0777); err != nil {
 			return err
 		}
 	}
