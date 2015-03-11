@@ -82,7 +82,7 @@ for i in 1..loopcount do
   end  
   times.push(time)
 end
-avg = times.reduce(:+) / times.size.to_f
-puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " writeEntries  \t ElapsedTime in seconds: #{avg}"
+sum = times.reduce(:+) 
+puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " writeEntries  \t ElapsedTime in seconds: #{sum}"
  
 con.close 
