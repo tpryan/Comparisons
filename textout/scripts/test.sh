@@ -17,4 +17,4 @@ time php textout/php/export.php $1
 echo ""
 echo ""
 echo "Executing go test"
-time textout/export $1 w
+time textout/export $1 q
