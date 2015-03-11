@@ -20,27 +20,24 @@ $mysqli = mysqli_connect($db['host'], $db['user'], $db['pass'], $db['name'])  or
 
 
 cleanDir($output_path);
-$entries = getEntries($mysqli, $sql);
+
+$start = microtime(true);
+	$entries = getEntries($mysqli, $sql);
+trace($start, "getEntries");	
 
 
-for ($i=1; $i<= $loopcount; $i++){
-	$path_for_store = $output_path . "/" . $i;
-	//echo "Creating " . $path_for_store . "\n";
-	writeEntries($entries, $path_for_store);
-
-}
-
-
-
-
+$start = microtime(true);
+	for ($i=1; $i<= $loopcount; $i++){
+		$path_for_store = $output_path . "/" . $i;
+		writeEntries($entries, $path_for_store);
+	}
+trace($start, "getEntries");	
 
 
 function cleanDir($path_to_clean){
 	if (!file_exists($path_to_clean)) {
-		//echo "Creating " . $path_to_clean . "\n";
 	    mkdir($path_to_clean);
 	} else {
-		//echo "Recreating " . $path_to_clean . "\n";
 		delTree($path_to_clean);
 		mkdir($path_to_clean);
 	}
@@ -100,6 +97,17 @@ function delTree($dir) {
     return rmdir($dir); 
   } 
 
+
+function trace($start, $message){
+	$end = microtime(true);
+
+	$tab = "\t";
+	if (strlen($message) < 12){
+		$tab = "\t\t";	
+	}
+
+	echo date('Y-m-d h:i:s') . " " . $message . $tab .  " ElapsedTime in seconds: ".($end-$start) . "\n";
+}
 
 
 ?>    
