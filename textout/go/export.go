@@ -41,8 +41,8 @@ func main() {
 	var err error
 	_ = runtime.GOMAXPROCS(runtime.NumCPU())
 
-	loopcount, err := strconv.Atoi(os.Args[1])
 	method := os.Args[2]
+	loopcount, err := strconv.Atoi(os.Args[1])
 
 	if err != nil {
 		log.Fatal(err)
@@ -78,7 +78,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_ = entries
 
 	if method == "p" {
 		if err = writePar(entries, outdir, loopcount); err != nil {
@@ -97,6 +96,7 @@ func main() {
 }
 
 func writeQueue(entries []Entry, outdir string, count int) error {
+	defer un(trace("writeQueue\t\t"))
 	q := queue.NewQueue(func(val interface{}) {
 
 	}, 20)
@@ -110,6 +110,7 @@ func writeQueue(entries []Entry, outdir string, count int) error {
 }
 
 func writePar(entries []Entry, outdir string, count int) error {
+	defer un(trace("writePar\t\t"))
 	var wg sync.WaitGroup
 	wg.Add(count)
 
@@ -130,6 +131,7 @@ func writePar(entries []Entry, outdir string, count int) error {
 }
 
 func writeSeq(entries []Entry, outdir string, count int) error {
+	defer un(trace("writeSeq\t\t"))
 	for i := 1; i <= count; i++ {
 		err := writeEntries(entries, outdir+strconv.Itoa(i))
 		if err != nil {
@@ -152,6 +154,7 @@ func cleanDir(dir string) error {
 }
 
 func getEntries() ([]Entry, error) {
+	defer un(trace("getEntries\t\t"))
 	rows, err := db.Query(entrySQL)
 	if err != nil {
 		return nil, err
@@ -177,6 +180,7 @@ func getEntries() ([]Entry, error) {
 }
 
 func writeEntries(entries []Entry, path string) error {
+
 	if err := os.Mkdir(path, 0777); err != nil {
 		return err
 	}
@@ -208,7 +212,6 @@ func repairURL(URL string) string {
 }
 
 func trace(s string) (string, time.Time) {
-	//log.Println("START:", s)
 	return s, time.Now()
 }
 
