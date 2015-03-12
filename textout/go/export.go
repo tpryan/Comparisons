@@ -12,8 +12,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/otium/queue"
 )
 import (
 	_ "github.com/go-sql-driver/mysql"
@@ -43,7 +41,6 @@ func main() {
 	var err error
 	_ = runtime.GOMAXPROCS(runtime.NumCPU())
 
-	method := os.Args[2]
 	loopcount, err := strconv.Atoi(os.Args[1])
 
 	if err != nil {
@@ -81,38 +78,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if method == "p" {
-		if err = writePar(entries, outdir, loopcount); err != nil {
-			log.Fatal(err)
-		}
-	} else if method == "q" {
-		if err = writeQueue(entries, outdir, loopcount); err != nil {
-			log.Fatal(err)
-		}
-	} else {
-		if err = writeSeq(entries, outdir, loopcount); err != nil {
-			log.Fatal(err)
-		}
+	if err = writePar(entries, outdir, loopcount); err != nil {
+		log.Fatal(err)
 	}
 
-}
-
-func writeQueue(entries []Entry, outdir string, count int) error {
-	defer un(trace("writeQueue\t\t"))
-	q := queue.NewQueue(func(val interface{}) {
-
-	}, 20)
-
-	for i := 0; i < count; i++ {
-		q.Push(writeEntries(entries, outdir+strconv.Itoa(i)))
-	}
-	q.Wait()
-
-	return nil
 }
 
 func writePar(entries []Entry, outdir string, count int) error {
-	defer un(trace("writePar\t\t"))
 	var wg sync.WaitGroup
 	wg.Add(count)
 
@@ -132,17 +104,6 @@ func writePar(entries []Entry, outdir string, count int) error {
 	return nil
 }
 
-func writeSeq(entries []Entry, outdir string, count int) error {
-	defer un(trace("writeSeq\t\t"))
-	for i := 1; i <= count; i++ {
-		err := writeEntries(entries, outdir+strconv.Itoa(i))
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 func cleanDir(dir string) error {
 
 	err := os.RemoveAll(dir)
@@ -156,7 +117,6 @@ func cleanDir(dir string) error {
 }
 
 func getEntries() ([]Entry, error) {
-	defer un(trace("getEntries\t\t"))
 	rows, err := db.Query(entrySQL)
 	if err != nil {
 		return nil, err
@@ -213,13 +173,4 @@ func repairURL(URL string) string {
 	out = strings.Replace(out, "http://http://", "http://", -1)
 	return out
 
-}
-
-func trace(s string) (string, time.Time) {
-	return s, time.Now()
-}
-
-func un(s string, startTime time.Time) {
-	endTime := time.Now()
-	log.Println(s, "ElapsedTime in seconds:", endTime.Sub(startTime).Seconds())
 }

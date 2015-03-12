@@ -19,20 +19,9 @@ $mysqli = mysqli_connect($db['host'], $db['user'], $db['pass'], $db['name'])  or
 
 
 cleanDir($output_path);
-
-$start = microtime(true);
-	$routes = getRoutes($mysqli, $sql);
-trace($start, "getRoutes");	
-
-$start = microtime(true);
-	$routes = processRoutes($routes);
-trace($start, "processRoutes");
-
-
-
-$start = microtime(true);
-	writeRoutes($routes, $path_for_store);
-trace($start, "writeRoutes");
+$routes = getRoutes($mysqli, $sql);
+$routes = processRoutes($routes);
+writeRoutes($routes, $path_for_store);
 
 
 function writeRoutes($routes, $store_path){
@@ -125,17 +114,6 @@ function getDistance($latitude1, $longitude1, $latitude2, $longitude2) {
 	$c = 2 * asin(sqrt($a));
 	$d = $earth_radius * $c;
 	return $d;
-}
-
-function trace($start, $message){
-	$end = microtime(true);
-
-	$tab = "\t";
-	if (strlen($message) < 12){
-		$tab = "\t\t";	
-	}
-
-	echo date('Y-m-d h:i:s') . " " . $message . $tab .  " ElapsedTime in seconds: ".($end-$start) . "\n";
 }
 
 function delTree($dir) { 

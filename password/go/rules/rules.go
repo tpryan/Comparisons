@@ -82,7 +82,6 @@ func match(c string) string {
 		if len(w) > len(c) {
 			continue
 		}
-
 		if strings.Index(uc, w) >= 0 {
 			return w
 		}

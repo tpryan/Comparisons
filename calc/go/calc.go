@@ -8,7 +8,6 @@ import (
 	"math"
 	"os"
 	"strconv"
-	"time"
 )
 
 import _ "github.com/go-sql-driver/mysql"
@@ -77,7 +76,6 @@ func main() {
 }
 
 func writeRoutes(routes []Route, path string) error {
-	defer un(trace("writeRoutes\t\t"))
 	if err := os.Mkdir(path, 0777); err != nil {
 		return err
 	}
@@ -125,7 +123,6 @@ func writeRoutes(routes []Route, path string) error {
 }
 
 func processRoutes(routes []Route) []Route {
-	defer un(trace("processRoutes\t"))
 
 	for _, r := range routes {
 		r.Distance = getDistance(r.SLat, r.SLon, r.DLat, r.DLon)
@@ -152,7 +149,6 @@ func deg2rad(deg float64) float64 {
 }
 
 func getRoutes(RouteSQL string) ([]Route, error) {
-	defer un(trace("getRoutes\t\t"))
 	rows, err := db.Query(RouteSQL)
 	if err != nil {
 		return nil, err
@@ -183,13 +179,4 @@ func cleanDir(dir string) error {
 
 	err := os.Mkdir(dir, 0777)
 	return err
-}
-
-func trace(s string) (string, time.Time) {
-	return s, time.Now()
-}
-
-func un(s string, startTime time.Time) {
-	endTime := time.Now()
-	log.Println(s, "ElapsedTime in seconds:", endTime.Sub(startTime).Seconds())
 }

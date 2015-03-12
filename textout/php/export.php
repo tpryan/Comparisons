@@ -6,7 +6,6 @@ if (defined('STDIN')) {
   $loopcount = 1;
 }
 
-
 $sql = file_get_contents(getcwd() . "/textout/sql/entries.sql");
 
 $db['user'] = getenv("DB_USER");
@@ -18,21 +17,14 @@ $output_path = getcwd() . "/textout/output/php";
 $mysqli = mysqli_connect($db['host'], $db['user'], $db['pass'], $db['name'])  or die("Error " . mysqli_error($mysqli)); 
 
 
-
 cleanDir($output_path);
 
-$start = microtime(true);
-	$entries = getEntries($mysqli, $sql);
-trace($start, "getEntries");	
+$entries = getEntries($mysqli, $sql);
 
-
-$start = microtime(true);
-	for ($i=1; $i<= $loopcount; $i++){
-		$path_for_store = $output_path . "/" . $i;
-		writeEntries($entries, $path_for_store);
-	}
-trace($start, "getEntries");	
-
+for ($i=1; $i<= $loopcount; $i++){
+	$path_for_store = $output_path . "/" . $i;
+	writeEntries($entries, $path_for_store);
+}
 
 function cleanDir($path_to_clean){
 	if (!file_exists($path_to_clean)) {
@@ -58,8 +50,6 @@ function getEntries($mysqli, $sql){
 		$entry["date"] = $row['formatted_post_date'];
 		array_push($entries, $entry);
 	}	
-
-
 	return $entries;
 }
 
@@ -78,7 +68,6 @@ function writeEntries($entries, $store_path){
 		$filename = $store_path . "/" . $entry["name"] . ".html";
 		file_put_contents ($filename , $item);
 	}
-
 }
 
 function cleanURL($url){
@@ -87,27 +76,10 @@ function cleanURL($url){
 	return $url;
 }
 
-
-
 function delTree($dir) { 
    $files = array_diff(scandir($dir), array('.','..')); 
     foreach ($files as $file) { 
       (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file"); 
     } 
     return rmdir($dir); 
-  } 
-
-
-function trace($start, $message){
-	$end = microtime(true);
-
-	$tab = "\t";
-	if (strlen($message) < 12){
-		$tab = "\t\t";	
-	}
-
-	echo date('Y-m-d h:i:s') . " " . $message . $tab .  " ElapsedTime in seconds: ".($end-$start) . "\n";
-}
-
-
-?>    
+  }

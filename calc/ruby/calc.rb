@@ -90,48 +90,23 @@ def getRoutes(mysql, sql)
   result  
 end
 
-
-
 db= Hash.new 
 db['user'] = ENV["OF_USER"];
 db['pass'] = ENV["OF_PASS"];
 db['host'] = ENV["OF_HOST"];
 db['name'] = ENV["OF_NAME"];
 
-loopcount = ARGV[0].to_i
+max = ARGV[0].to_i
 output_path = Dir.getwd() + "/calc/output/ruby";
 
-sql = File.readlines('calc/sql/prepstatement.sql').join(" ")
 con = Mysql.new(db['host'], db['user'], db['pass'], db['name'])  
-
-
-
-sql += "\n" + "Limit 0," + loopcount.to_s + "\n";
+sql = File.readlines('calc/sql/prepstatement.sql').join(" ")
+sql += "\n" + "Limit 0," + max.to_s + "\n";
 
 cleanDir(output_path)
 
-routes =  []
-time = Benchmark.realtime do
-  routes = getRoutes(con, sql)
-end
-puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " getRoutes \t\t ElapsedTime in seconds: #{time}"
+routes = getRoutes(con, sql)
 
-time = Benchmark.realtime do
-  routes = processRoutes(routes)
-end
-puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " processRoutes \t ElapsedTime in seconds: #{time}"
+routes = processRoutes(routes)
 
-time = Benchmark.realtime do
-  writeRoutes(routes, output_path+"/1/")
-end
-puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " writeRoutes \t\t ElapsedTime in seconds: #{time}"
-
-
-
-
-
-
-
-
-
-
+writeRoutes(routes, output_path+"/1/")

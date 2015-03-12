@@ -1,6 +1,5 @@
 require 'mysql'
 require 'fileutils'
-require "benchmark"  
 
 
 def cleanDir(path_to_clean)
@@ -50,9 +49,6 @@ def writeEntries(entries, store_path)
   end
 
 end
-
-
-
   
 db= Hash.new 
 db['user'] = ENV["DB_USER"];
@@ -68,21 +64,10 @@ con = Mysql.new(db['host'], db['user'], db['pass'], db['name'])
 
 cleanDir(output_path)
 
-entries = []
-time = Benchmark.realtime do
-  entries = getEntries(con, sql)
-end
-puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " getEntries \t\t ElapsedTime in seconds: #{time}"
+entries = getEntries(con, sql)
 
-
-times = []
 for i in 1..loopcount do
-  time = Benchmark.realtime do
-    writeEntries(entries, output_path + "/" +  i.to_s)
-  end  
-  times.push(time)
+  writeEntries(entries, output_path + "/" +  i.to_s)
 end
-sum = times.reduce(:+) 
-puts Time.now.strftime("%y-%m-%d %H:%M:%S") + " writeEntries  \t ElapsedTime in seconds: #{sum}"
  
 con.close 

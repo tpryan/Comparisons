@@ -9,8 +9,6 @@
 	  $loopcount = 1;
 	}
 
-	
-
 	$i=1;
 
 	$handle = fopen("password/data/test_passwords.txt", "r");
@@ -29,8 +27,5 @@
 	} else {
 	    echo "Error opening test file";
 	} 
-
-
-
 
 ?>

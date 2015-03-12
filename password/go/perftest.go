@@ -28,6 +28,8 @@ func main() {
 
 		l := scanner.Text()
 		res := Rules.Validate(l)
+		//The whole point of this is to test performance,
+		//so I have to call this method and then discard it.
 		_ = res
 		//fmt.Printf("%v\n", res)
 

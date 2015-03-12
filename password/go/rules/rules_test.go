@@ -16,7 +16,6 @@ func TestHandlesEmptyInput(t *testing.T) {
 	if got.Message != FAIL_EMPTY {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }
 
 func TestHandlesMinCheck(t *testing.T) {
@@ -31,7 +30,6 @@ func TestHandlesMinCheck(t *testing.T) {
 	if got.Message != FAIL_MIN {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }
 
 func TestHandlesMaxCheck(t *testing.T) {
@@ -46,7 +44,6 @@ func TestHandlesMaxCheck(t *testing.T) {
 	if got.Message != FAIL_MAX {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }
 
 func TestHandlesNoUpper(t *testing.T) {
@@ -61,7 +58,6 @@ func TestHandlesNoUpper(t *testing.T) {
 	if got.Message != FAIL_UPPER {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }
 
 func TestHandlesNoLower(t *testing.T) {
@@ -76,7 +72,6 @@ func TestHandlesNoLower(t *testing.T) {
 	if got.Message != FAIL_LOWER {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }
 
 func TestHandlesNoNumeric(t *testing.T) {
@@ -91,7 +86,6 @@ func TestHandlesNoNumeric(t *testing.T) {
 	if got.Message != FAIL_NUMBER {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }
 
 func TestHandlesNoSpecial(t *testing.T) {
@@ -106,7 +100,6 @@ func TestHandlesNoSpecial(t *testing.T) {
 	if got.Message != FAIL_SPECIAL {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }
 
 func TestHandlesDictionaryPresent(t *testing.T) {
@@ -121,11 +114,9 @@ func TestHandlesDictionaryPresent(t *testing.T) {
 	if got.Message != FAIL_DICTIONARY {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 	if got.Word != want.Word {
 		t.Errorf("Validate(%q).Word == %q, want %q", in, got.Word, want.Word)
 	}
-
 }
 
 func TestHandlesValid(t *testing.T) {
@@ -140,5 +131,4 @@ func TestHandlesValid(t *testing.T) {
 	if got.Message != SUCCESS {
 		t.Errorf("Validate(%q).Message == %q, want %q", in, got.Message, want.Message)
 	}
-
 }

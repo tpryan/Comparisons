@@ -1,3 +1,4 @@
+export TIMEFORMAT=%R
 echo "Building go executable"
 go build -o textout/export  textout/go/export.go
 
@@ -10,11 +11,7 @@ rm -rf textout/output/go
 echo ""
 echo "Executing ruby test"
 time ruby textout/ruby/export.rb $1
-echo ""
-echo ""
 echo "Executing php test"
 time php textout/php/export.php $1
-echo ""
-echo ""
 echo "Executing go test"
-time textout/export $1 q
+time textout/export $1 
