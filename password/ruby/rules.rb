@@ -17,8 +17,45 @@ class Rules
 
   Result = Struct.new(:pass, :message, :status, :word)
 
+
   def initialize()
+    @dicthash = {}
+
+    Dict::DICT.each do |word| 
+      @dicthash[:word] = 0
+    end
   end
+
+
+  def break_string(str,min)
+    res = {}
+    len = str.length
+
+    for i in min..len
+      for j in 0..(len-min)
+        part = str[j,i].upcase
+
+        if part.length >=i 
+          res[:part]=0
+        end
+
+      end  
+    end  
+
+    res.keys
+
+  end 
+
+  def hashMatch(candidate)
+    arr = break_string(candidate,MINIMUM_MATCH)
+    arr.each do |part| 
+      if @dicthash.has_key?(part) 
+        return part
+      end
+    end
+    ""
+  end  
+
 
   def match(candidate)
     uc = candidate.upcase
@@ -43,7 +80,7 @@ class Rules
 
 
   
-  def validate(candidate)
+  def validate(candidate, method="bruteforce")
 
     if candidate.length == 0
       return Result.new(false, FAIL_EMPTY, "FAIL_EMPTY", "")
@@ -75,7 +112,16 @@ class Rules
        return Result.new(false, FAIL_SPECIAL, "FAIL_SPECIAL", "")
     end  
 
-    word = match(candidate)
+
+    if method == "bruteforce"
+      word = match(candidate)
+    else 
+      word = hashMatch(candidate)
+    end  
+
+
+
+
     if word.length > 0 
       return Result.new(false, FAIL_DICTIONARY, "FAIL_DICTIONARY", "")
     end  

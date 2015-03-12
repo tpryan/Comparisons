@@ -65,6 +65,20 @@ class TestRules < Test::Unit::TestCase
     assert_true(result.pass )
     assert_equal(result.message, Rules::SUCCESS )
   end
+
+  def test_dictionary_hash
+    candidate = "Drdfjflr9mg&Apple"
+    result = Rules.new().validate(candidate, "hash")
+    assert_false(result.pass )
+    assert_equal(result.message, Rules::FAIL_DICTIONARY )
+  end
+
+  def test_valid_hash
+    candidate = "Drdfjflr9mg&"
+    result = Rules.new().validate(candidate, "hash")
+    assert_true(result.pass )
+    assert_equal(result.message, Rules::SUCCESS )
+  end
  
 end
 

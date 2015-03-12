@@ -9,6 +9,12 @@
 	  $loopcount = 1;
 	}
 
+	if (defined('STDIN') && array_key_exists(2, $argv)) {
+	  $method = $argv[2];
+	} else { 
+	  $method = "bruteforce";
+	}
+
 	$i=1;
 
 	$handle = fopen("password/data/test_passwords.txt", "r");
@@ -17,7 +23,7 @@
     		if ($i>$loopcount){
     			break;
     		}
-    		$result = $rules->validate($line);
+    		$result = $rules->validate($line, $method);
     		//echo $line . " " . implode(" ",$result) . "\n";
 
     		$i++;

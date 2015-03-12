@@ -22,11 +22,12 @@ const (
 )
 
 var (
-	lr   = regexp.MustCompile("[a-z]")
-	ur   = regexp.MustCompile("[A-Z]")
-	nr   = regexp.MustCompile("[0-9]")
-	sr   = regexp.MustCompile("[~!@#$%^&*]")
-	dict = GetDict()
+	lr      = regexp.MustCompile("[a-z]")
+	ur      = regexp.MustCompile("[A-Z]")
+	nr      = regexp.MustCompile("[0-9]")
+	sr      = regexp.MustCompile("[~!@#$%^&*]")
+	dict    = GetDict()
+	dictmap = GetDictMap()
 )
 
 type Result struct {
@@ -36,7 +37,7 @@ type Result struct {
 	Word    string
 }
 
-func Validate(c string) Result {
+func Validate(c string, m string) Result {
 	if len(c) == 0 {
 		return Result{false, FAIL_EMPTY, "FAIL_EMPTY", ""}
 	}
@@ -65,7 +66,14 @@ func Validate(c string) Result {
 		return Result{false, FAIL_SPECIAL, "FAIL_SPECIAL", ""}
 	}
 
-	if w := match(c); w != "" {
+	w := ""
+	if m == "bruteforce" {
+		w = match(c)
+	} else {
+		w = hashMatch(c)
+	}
+
+	if w != "" {
 		return Result{false, FAIL_DICTIONARY, "FAIL_DICTIONARY", w}
 	}
 
@@ -88,4 +96,36 @@ func match(c string) string {
 	}
 
 	return ""
+}
+
+func hashMatch(c string) string {
+	hmap := breakString(c, MINIMUM_MATCH)
+
+	for k := range hmap {
+		if _, ok := dictmap[k]; ok {
+			return k
+		}
+	}
+	return ""
+}
+
+func breakString(str string, min int) map[string]int {
+	res := make(map[string]int)
+	ln := len(str)
+	for i := min; i <= ln; i++ {
+		for j := 0; j < (ln - min); j++ {
+
+			if i+j > ln {
+				continue
+			}
+
+			part := strings.ToUpper(str[j : i+j])
+
+			if len(part) >= i {
+				res[part] = 0
+			}
+		}
+	}
+
+	return res
 }

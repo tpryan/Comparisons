@@ -77,5 +77,22 @@ class rules_test extends PHPUnit_Framework_TestCase
        $this->assertEquals($result['message'], $rules::SUCCESS);
     }
 
+    public function testDictionaryHash() {
+       $rules = new Rules();
+       $candiate = "Drdfjflr9mg&Apple";
+       $result = $rules->validate($candiate, "hash");
+       $this->assertFalse($result['pass']);
+       $this->assertEquals($result['message'], $rules::FAIL_DICTIONARY);
+       $this->assertEquals($result['word'], "APPLE");
+    }
+
+    public function testValidHash() {
+       $rules = new Rules();
+       $candiate = "Drdfjflr9mg&";
+       $result = $rules->validate($candiate, "hash");
+       $this->assertTrue($result['pass']);
+       $this->assertEquals($result['message'], $rules::SUCCESS);
+    }
+
 }
 ;?>
