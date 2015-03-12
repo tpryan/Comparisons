@@ -14,7 +14,7 @@ class Rules
 	const FAIL_LOWER =  "At least one LOWERCASE character is required.";
 	const FAIL_NUMBER =  "At least one NUMERIC character is required.";
 	const FAIL_SPECIAL =  "At least one SPECIAL (~!@#$%^&*) character is required.";
-	const FAIL_DICTIONARY =  "No dictionary words allowed.  Found: ";
+	const FAIL_DICTIONARY =  "No dictionary words allowed.";
 	const FAIL_MIN =  "Password must be at least 8 characters long."  ;
 	const FAIL_MAX =  "Password must be no more than 24 characters long.";
 
@@ -22,9 +22,15 @@ class Rules
 
 	public function __construct() {	
 	  $this->dict= json_decode(file_get_contents(getcwd() . "/password/data/dict.json"));
+
+	  $this->dicthash = [];
+
+	  foreach ($this->dict as $key => $word){
+	  	$this->dicthash[$word] = 0;
+	  }
 	}
 
-	public function validate($candidate){
+	public function validate($candidate, $method = "bruteforce"){
 
 		if (strlen($candidate) == 0) {
 			return self::create_result(false, self::FAIL_EMPTY, "FAIL_EMPTY");	
@@ -55,7 +61,14 @@ class Rules
 			return self::create_result(false, self::FAIL_SPECIAL, "FAIL_SPECIAL");	
 		}
 
-		$dic_match = self::dictionaryMatch($candidate);
+		if ($method == "bruteforce"){
+			$dic_match = self::dictionaryMatch($candidate);
+		} else {
+			$dic_match = self::hashMatch($candidate);
+		}
+		
+		
+
 		if (strlen($dic_match) > 0) {
 			return self::create_result(false, self::FAIL_DICTIONARY, "FAIL_DICTIONARY", $dic_match);	
 		}
@@ -101,5 +114,34 @@ class Rules
 		return "";
 
 	}
+
+	private function hashMatch($candidate){
+		$arr = self::breakString($candidate, self::MINIMUM_MATCH);
+		
+		foreach ($arr as $key => $part){
+			if (array_key_exists($part, $this->dicthash)){
+				return $part;
+			}
+		}	
+		return "";
+	}
+
+	private function breakString($str, $min){
+		$res = [];
+		$len = strlen($str);
+
+		for ($i=$min; $i<=$len; $i++){
+			for ($j=0; $j<($len-$min); $j++){
+				$part = strtoupper(substr($str, $j, $i));
+				if (strlen($part)>=$i){
+					$res[$part]=0;
+				}
+			}
+		}
+
+		return array_keys($res);
+	}
+
+
 }
 ?>
