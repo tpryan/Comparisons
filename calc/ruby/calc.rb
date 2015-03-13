@@ -2,7 +2,6 @@ require 'mysql'
 require 'fileutils'  
 require "benchmark"
 
-
 def cleanDir(path_to_clean)
   FileUtils.rm_rf(path_to_clean) 
   Dir.mkdir(path_to_clean,0777)
@@ -28,8 +27,6 @@ def processRoutes(routes)
     r['distance'] = getDistance(r['source_lat'].to_f,r['source_lon'].to_f,r['dest_lat'].to_f,r['dest_lon'].to_f);
   end
 end
-
-
 
 def writeRoutes(routes, store_path)
   Dir.mkdir(store_path,0777)
@@ -90,6 +87,8 @@ def getRoutes(mysql, sql)
   result  
 end
 
+
+
 db= Hash.new 
 db['user'] = ENV["OF_USER"];
 db['pass'] = ENV["OF_PASS"];
@@ -103,10 +102,8 @@ con = Mysql.new(db['host'], db['user'], db['pass'], db['name'])
 sql = File.readlines('calc/sql/prepstatement.sql').join(" ")
 sql += "\n" + "Limit 0," + max.to_s + "\n";
 
+
 cleanDir(output_path)
-
 routes = getRoutes(con, sql)
-
 routes = processRoutes(routes)
-
 writeRoutes(routes, output_path+"/1/")

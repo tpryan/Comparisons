@@ -1,7 +1,6 @@
 require 'mysql'
 require 'fileutils'
 
-
 def cleanDir(path_to_clean)
   FileUtils.rm_rf(path_to_clean) 
   Dir.mkdir(path_to_clean,0777)
@@ -10,7 +9,6 @@ end
 def cleanURL(url)
   url.gsub("blog//blog/index.php/", "").gsub("http://http://", "http://")
 end
-
 
 def getEntries(mysql, sql)
   rs = mysql.query(sql) 
@@ -29,7 +27,6 @@ def getEntries(mysql, sql)
   end
   result  
 end
-
 
 def writeEntries(entries, store_path)
   Dir.mkdir(store_path,0777);

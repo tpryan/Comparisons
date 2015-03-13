@@ -123,11 +123,9 @@ func writeRoutes(routes []Route, path string) error {
 }
 
 func processRoutes(routes []Route) []Route {
-
 	for _, r := range routes {
 		r.Distance = getDistance(r.SLat, r.SLon, r.DLat, r.DLon)
 	}
-
 	return routes
 }
 
