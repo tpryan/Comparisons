@@ -37,3 +37,4 @@ The individual tasks and test scripts can take 2 argument:
 
 * __limit__ - the number of passwords to attempt.
 * __method__ - 2 options *bruteforce* and *hash*. *Hash* is significantly faster in all three languages.  
+
