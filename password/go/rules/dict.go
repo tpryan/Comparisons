@@ -5,6 +5,16 @@ func GetDict()[]string{
 	return Dict
 }
 
+func GetDictMap()map[string]int{
+	r := make(map[string]int)
+	for _, w := range Dict {
+		r[w] = 0;
+	}
+
+
+	return r
+}
+
 
 var Dict = []string{"A",
 "AA",

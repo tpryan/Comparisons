@@ -12,6 +12,7 @@ import (
 func main() {
 
 	loopcount, err := strconv.Atoi(os.Args[1])
+	method := os.Args[2]
 
 	file, err := os.Open("password/data/test_passwords.txt")
 	if err != nil {
@@ -27,7 +28,7 @@ func main() {
 		}
 
 		l := scanner.Text()
-		res := Rules.Validate(l)
+		res := Rules.Validate(l, method)
 		//The whole point of this is to test performance,
 		//so I have to call this method and then discard it.
 		_ = res
