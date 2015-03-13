@@ -109,20 +109,20 @@ func hashMatch(c string) string {
 	return ""
 }
 
-func breakString(str string, min int) map[string]int {
+func breakString(s string, m int) map[string]int {
 	res := make(map[string]int)
-	ln := len(str)
-	for i := min; i <= ln; i++ {
-		for j := 0; j < (ln - min); j++ {
+	ln := len(s)
+	for i := m; i <= ln; i++ {
+		for j := 0; j < (ln - m); j++ {
 
 			if i+j > ln {
 				continue
 			}
 
-			part := strings.ToUpper(str[j : i+j])
+			p := strings.ToUpper(s[j : i+j])
 
-			if len(part) >= i {
-				res[part] = 0
+			if len(p) >= i {
+				res[p] = 0
 			}
 		}
 	}
