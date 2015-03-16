@@ -37,6 +37,7 @@ type Result struct {
 }
 
 func Validate(c string, m string) Result {
+
 	if len(c) == 0 {
 		return Result{false, failEmpty, "FAIL_EMPTY", ""}
 	}

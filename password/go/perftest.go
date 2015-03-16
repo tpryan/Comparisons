@@ -15,6 +15,7 @@ var (
 )
 
 func main() {
+	flag.Parse()
 
 	f, err := os.Open("password/data/test_passwords.txt")
 	if err != nil {
