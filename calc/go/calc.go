@@ -3,43 +3,40 @@ package main
 import (
 	"bytes"
 	"database/sql"
+	"flag"
 	"io/ioutil"
 	"log"
 	"math"
 	"os"
 	"strconv"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-import _ "github.com/go-sql-driver/mysql"
-
-const sqldriver = "mysql"
-
-var db *sql.DB
+var (
+	db  *sql.DB
+	max = flag.String("max", "1", "the max number of records to process.")
+)
 
 type Route struct {
 	Airline  string
-	SCode    string
-	SName    string
-	SLat     float64
-	SLon     float64
-	DCode    string
-	DName    string
-	DLat     float64
-	DLon     float64
-	Distance float64
+	SCode    string  //Source Airport Code
+	SName    string  //Source Airport Name
+	SLat     float64 //Source Airport Latitude
+	SLon     float64 //Source Airport Longitude
+	DCode    string  //Destination Airport Code
+	DName    string  //Destination Airport Name
+	DLat     float64 //Destination Airport Latitude
+	DLon     float64 //Destination Airport Longitude
+	Distance float64 //Distance
 }
 
 func main() {
 	var err error
 
-	max, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	SQLhost := os.Getenv("OF_USER") + ":" + os.Getenv("OF_PASS") + "@tcp(" + os.Getenv("OF_HOST") + ":3306)/" + os.Getenv("OF_NAME")
 
-	if db, err = sql.Open(sqldriver, SQLhost); err != nil {
+	if db, err = sql.Open("mysql", SQLhost); err != nil {
 		log.Fatal(err)
 	}
 
@@ -60,7 +57,7 @@ func main() {
 	}
 
 	RouteSQL := string(b)
-	RouteSQL += "\n" + "Limit 0," + strconv.Itoa(max) + "\n"
+	RouteSQL += "\n" + "Limit 0," + *max + "\n"
 
 	Routes, err := getRoutes(RouteSQL)
 	if err != nil {
