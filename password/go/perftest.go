@@ -2,42 +2,40 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"log"
 	"os"
-	"strconv"
 
 	"github.com/tpryan/comps/password/go/rules"
 )
 
+var (
+	count  = flag.Int("count", 1, "the max number of passwords to process.")
+	method = flag.String("method", "bruteforce", "the way to process the passwords")
+)
+
 func main() {
 
-	loopcount, err := strconv.Atoi(os.Args[1])
-	method := os.Args[2]
-
-	file, err := os.Open("password/data/test_passwords.txt")
+	f, err := os.Open("password/data/test_passwords.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
+	defer f.Close()
 
 	i := 1
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if i > loopcount {
+	s := bufio.NewScanner(f)
+	for s.Scan() {
+		if i > *count {
 			break
 		}
 
-		l := scanner.Text()
-		res := Rules.Validate(l, method)
-		//The whole point of this is to test performance,
-		//so I have to call this method and then discard it.
-		_ = res
-		//fmt.Printf("%v\n", res)
+		l := s.Text()
+		_ = rules.Validate(l, *method)
 
 		i++
 	}
 
-	if err := scanner.Err(); err != nil {
+	if err := s.Err(); err != nil {
 		log.Fatal(err)
 	}
 

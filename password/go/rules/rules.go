@@ -1,4 +1,4 @@
-package Rules
+package rules
 
 import (
 	"regexp"
@@ -6,19 +6,18 @@ import (
 )
 
 const (
-	MINIMUM_MATCH   = 4
-	MIN_LENGTH      = 8
-	MAX_LENGTH      = 24
-	SPECIAL         = "~!@#$%^&*"
-	SUCCESS         = "Password passes policy"
-	FAIL_EMPTY      = "No password given"
-	FAIL_UPPER      = "At least one UPPERCASE character is required."
-	FAIL_LOWER      = "At least one LOWERCASE character is required."
-	FAIL_NUMBER     = "At least one NUMERIC character is required."
-	FAIL_SPECIAL    = "At least one SPECIAL (~!@#$%^&*) character is required."
-	FAIL_DICTIONARY = "No dictionary words allowed."
-	FAIL_MIN        = "Password must be at least 8 characters long."
-	FAIL_MAX        = "Password must be no more than 24 characters long."
+	minMatch       = 4
+	minLength      = 8
+	maxLen         = 24
+	success        = "Password passes policy"
+	failEmpty      = "No password given"
+	failUpper      = "At least one UPPERCASE character is required."
+	failLower      = "At least one LOWERCASE character is required."
+	failNumber     = "At least one NUMERIC character is required."
+	failSpecial    = "At least one SPECIAL (~!@#$%^&*) character is required."
+	failDictionary = "No dictionary words allowed."
+	failMin        = "Password must be at least 8 characters long."
+	failMax        = "Password must be no more than 24 characters long."
 )
 
 var (
@@ -39,31 +38,31 @@ type Result struct {
 
 func Validate(c string, m string) Result {
 	if len(c) == 0 {
-		return Result{false, FAIL_EMPTY, "FAIL_EMPTY", ""}
+		return Result{false, failEmpty, "FAIL_EMPTY", ""}
 	}
 
-	if len(c) < MIN_LENGTH {
-		return Result{false, FAIL_MIN, "FAIL_MIN", ""}
+	if len(c) < minLength {
+		return Result{false, failMin, "FAIL_MIN", ""}
 	}
 
-	if len(c) > MAX_LENGTH {
-		return Result{false, FAIL_MAX, "FAIL_MAX", ""}
+	if len(c) > maxLen {
+		return Result{false, failMax, "FAIL_MAX", ""}
 	}
 
 	if r := ur.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_UPPER, "FAIL_UPPER", ""}
+		return Result{false, failUpper, "FAIL_UPPER", ""}
 	}
 
 	if r := lr.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_LOWER, "FAIL_LOWER", ""}
+		return Result{false, failLower, "FAIL_LOWER", ""}
 	}
 
 	if r := nr.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_NUMBER, "FAIL_NUMBER", ""}
+		return Result{false, failNumber, "FAIL_NUMBER", ""}
 	}
 
 	if r := sr.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_SPECIAL, "FAIL_SPECIAL", ""}
+		return Result{false, failSpecial, "FAIL_SPECIAL", ""}
 	}
 
 	w := ""
@@ -74,22 +73,20 @@ func Validate(c string, m string) Result {
 	}
 
 	if w != "" {
-		return Result{false, FAIL_DICTIONARY, "FAIL_DICTIONARY", w}
+		return Result{false, failDictionary, "FAIL_DICTIONARY", w}
 	}
 
-	return Result{true, SUCCESS, "SUCCESS", ""}
+	return Result{true, success, "SUCCESS", w}
 }
 
 func match(c string) string {
 	uc := strings.ToUpper(c)
 	for _, w := range dict {
 
-		if len(w) < MINIMUM_MATCH {
+		if l := len(w); l < minMatch || l > len(c) {
 			continue
 		}
-		if len(w) > len(c) {
-			continue
-		}
+
 		if strings.Index(uc, w) >= 0 {
 			return w
 		}
@@ -99,7 +96,7 @@ func match(c string) string {
 }
 
 func hashMatch(c string) string {
-	hmap := breakString(c, MINIMUM_MATCH)
+	hmap := breakString(c, minMatch)
 
 	for k := range hmap {
 		if _, ok := dictmap[k]; ok {
@@ -109,11 +106,13 @@ func hashMatch(c string) string {
 	return ""
 }
 
-func breakString(s string, m int) map[string]int {
+// breakstring breaks a string into all substrings with a length
+// greater than @min
+func breakString(s string, min int) map[string]int {
 	res := make(map[string]int)
 	ln := len(s)
-	for i := m; i <= ln; i++ {
-		for j := 0; j < (ln - m); j++ {
+	for i := min; i <= ln; i++ {
+		for j := 0; j < (ln - min); j++ {
 
 			if i+j > ln {
 				continue
