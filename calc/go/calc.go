@@ -66,7 +66,6 @@ func main() {
 	}
 
 	Routes = processRoutes(Routes)
-
 	if err = writeRoutes(Routes, outdir+"/1"); err != nil {
 		log.Fatal(err)
 	}
@@ -95,6 +94,7 @@ func writeRoutes(routes []Route, path string) error {
 	b.WriteString("	</tr>" + "\n")
 
 	for _, r := range routes {
+
 		b.WriteString("	<tr>" + "\n")
 		b.WriteString("		<td>" + r.Airline + "</td>" + "\n")
 		b.WriteString("		<td>" + r.SCode + "</td>" + "\n")
@@ -121,8 +121,9 @@ func writeRoutes(routes []Route, path string) error {
 }
 
 func processRoutes(routes []Route) []Route {
-	for _, r := range routes {
+	for i, r := range routes {
 		r.Distance = getDistance(r.SLat, r.SLon, r.DLat, r.DLon)
+		routes[i] = r
 	}
 	return routes
 }
