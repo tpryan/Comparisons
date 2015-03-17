@@ -14,4 +14,4 @@ time ruby calc/ruby/calc.rb $1
 echo "Executing php test"
 time php calc/php/calc.php $1
 echo "Executing go test"
-time calc/calc $1 w
+time calc/calc -max=$1 

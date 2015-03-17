@@ -33,6 +33,7 @@ type Route struct {
 
 func main() {
 	var err error
+	flag.Parse()
 
 	SQLhost := os.Getenv("OF_USER") + ":" + os.Getenv("OF_PASS") + "@tcp(" + os.Getenv("OF_HOST") + ":3306)/" + os.Getenv("OF_NAME")
 
