@@ -31,7 +31,14 @@ func main() {
 		}
 
 		l := s.Text()
-		_ = rules.Validate(l, *method)
+		switch *method {
+		case "bruteforce":
+			_ = rules.Validate(l, rules.Bruteforce)
+		case "hash":
+			_ = rules.Validate(l, rules.Hash)
+		default:
+			log.Fatalf("%v\n", rules.FailError)
+		}
 
 		i++
 	}

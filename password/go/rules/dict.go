@@ -5,10 +5,10 @@ func GetDict()[]string{
 	return Dict
 }
 
-func GetDictMap()map[string]int{
-	r := make(map[string]int)
+func GetDictMap()map[string]bool{
+	r := make(map[string]bool)
 	for _, w := range Dict {
-		r[w] = 0;
+		r[w] = true;
 	}
 
 
