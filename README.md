@@ -17,6 +17,8 @@ The individual tasks and test scripts can take 1 argument:
 
 * __loopcount__ - the number of times to create the same set of documents 
 
+Data comes from a Wordpress Database.  
+
 ## calc
 
 * Grabs the content of a World Flight database from mysql
@@ -26,6 +28,8 @@ The individual tasks and test scripts can take 1 argument:
 The individual tasks and test scripts can take 1 argument:
 
 * __max__ - the number of records to retrieve from the database. 
+
+Data comes from openflights.org.  Get a copy of the data from them to test: http://openflights.org/data.html
 
 ## password
 
