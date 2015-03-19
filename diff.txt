@@ -1,0 +1,582 @@
+diff --git a/calc/go/calc.go b/calc/go/calc.go
+index 365888e..1bd6c2a 100644
+--- a/calc/go/calc.go
++++ b/calc/go/calc.go
+@@ -1,3 +1,18 @@
++/*
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++*/
+ package main
+ 
+ import (
+diff --git a/calc/php/calc.php b/calc/php/calc.php
+index e42dd6b..b0b494e 100644
+--- a/calc/php/calc.php
++++ b/calc/php/calc.php
+@@ -1,3 +1,18 @@
++<!-- 
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++ -->
+ <?php
+ 
+ ini_set('memory_limit', '8186M');
+diff --git a/calc/php/php.ini b/calc/php/php.ini
+index b4fcc47..b91ea04 100644
+--- a/calc/php/php.ini
++++ b/calc/php/php.ini
+@@ -1,3 +1,17 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
+ date.timezone = "America/Los_Angeles"
+ 
+ variables_order = "EGPCS"
+diff --git a/calc/ruby/calc.rb b/calc/ruby/calc.rb
+index 1bac432..69fa6b4 100644
+--- a/calc/ruby/calc.rb
++++ b/calc/ruby/calc.rb
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ require 'mysql'
+ require 'fileutils'  
+ require "benchmark"
+diff --git a/calc/scripts/test.sh b/calc/scripts/test.sh
+index 30acb44..71813f4 100755
+--- a/calc/scripts/test.sh
++++ b/calc/scripts/test.sh
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ export TIMEFORMAT=%R
+ echo "Building go executable"
+ go build -o calc/calc  calc/go/calc.go
+@@ -12,6 +25,6 @@ echo ""
+ echo "Executing ruby test"
+ time ruby calc/ruby/calc.rb $1
+ echo "Executing php test"
+-time php calc/php/calc.php $1
++time php calc/php/calc.php $1 > /dev/null
+ echo "Executing go test"
+ time calc/calc -max=$1 
+\ No newline at end of file
+diff --git a/calc/sql/prepstatement.sql b/calc/sql/prepstatement.sql
+index 1d42641..c6e4138 100644
+--- a/calc/sql/prepstatement.sql
++++ b/calc/sql/prepstatement.sql
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ SELECT 		r.airline, 
+ 			r.source_code, a_s.name as source_name, a_s.lat as source_lat, a_s.lon as source_lon, 
+ 			r.dest_code, a_d.name as dest_name, a_d.lat as dest_lat, a_d.lon as dest_lon
+diff --git a/password/go/perftest.go b/password/go/perftest.go
+index e97e46f..00df32e 100644
+--- a/password/go/perftest.go
++++ b/password/go/perftest.go
+@@ -1,3 +1,18 @@
++/*
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++*/
+ package main
+ 
+ import (
+diff --git a/password/go/rules/dict.go b/password/go/rules/dict.go
+index 8825d1e..2e8bca6 100644
+--- a/password/go/rules/dict.go
++++ b/password/go/rules/dict.go
+@@ -1,3 +1,18 @@
++/*
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++*/
+ package rules
+ 
+ 
+diff --git a/password/go/rules/rules.go b/password/go/rules/rules.go
+index abc9dde..c17d0ee 100644
+--- a/password/go/rules/rules.go
++++ b/password/go/rules/rules.go
+@@ -1,3 +1,18 @@
++/*
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++*/
+ package rules
+ 
+ import (
+diff --git a/password/go/rules/rules_test.go b/password/go/rules/rules_test.go
+index 38d28be..b78a7b7 100644
+--- a/password/go/rules/rules_test.go
++++ b/password/go/rules/rules_test.go
+@@ -1,3 +1,18 @@
++/*
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++*/
+ package rules
+ 
+ import (
+diff --git a/password/php/index.php b/password/php/index.php
+index 378eef1..ac0d099 100644
+--- a/password/php/index.php
++++ b/password/php/index.php
+@@ -1,3 +1,18 @@
++<!-- 
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++ -->
+ <?php 
+ 
+ 	include_once("password/php/rules.php");
+diff --git a/password/php/perftest.php b/password/php/perftest.php
+index 206f372..b10b353 100644
+--- a/password/php/perftest.php
++++ b/password/php/perftest.php
+@@ -1,3 +1,18 @@
++<!-- 
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++ -->
+ <?php
+ 	
+ 	include_once("password/php/rules.php");
+diff --git a/password/php/rules.php b/password/php/rules.php
+index 8e2efe3..7b8c0ed 100644
+--- a/password/php/rules.php
++++ b/password/php/rules.php
+@@ -1,3 +1,18 @@
++<!-- 
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++ -->
+ <?php 
+ 
+ class Rules
+diff --git a/password/php/rules_test.php b/password/php/rules_test.php
+index d1c3cc1..de08f96 100644
+--- a/password/php/rules_test.php
++++ b/password/php/rules_test.php
+@@ -1,3 +1,18 @@
++<!-- 
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++ -->
+ <?php
+ include "password/php/rules.php";
+ class rules_test extends PHPUnit_Framework_TestCase
+diff --git a/password/ruby/dict.rb b/password/ruby/dict.rb
+index 458d19e..d9a5c72 100644
+--- a/password/ruby/dict.rb
++++ b/password/ruby/dict.rb
+@@ -1,8 +1,17 @@
+-class Dict
+-
++# Copyright 2015, Google, Inc.
+ 
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
+ 
++#     http://www.apache.org/licenses/LICENSE-2.0
+ 
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++class Dict
+ 
+ DICT = ["A",
+ "AA",
+diff --git a/password/ruby/manual.rb b/password/ruby/manual.rb
+index 4420ee8..7194a44 100644
+--- a/password/ruby/manual.rb
++++ b/password/ruby/manual.rb
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ require_relative "rules"
+ 
+ candidate = ARGV[0]
+diff --git a/password/ruby/perftest.rb b/password/ruby/perftest.rb
+index d097fcb..f67dbcf 100644
+--- a/password/ruby/perftest.rb
++++ b/password/ruby/perftest.rb
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ require_relative "rules"
+ 
+ loopcount = ARGV[0].to_i
+diff --git a/password/ruby/rules.rb b/password/ruby/rules.rb
+index fb181e9..2f9804b 100644
+--- a/password/ruby/rules.rb
++++ b/password/ruby/rules.rb
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ require_relative "dict"
+ class Rules
+ 
+diff --git a/password/ruby/tc_rules.rb b/password/ruby/tc_rules.rb
+index b5b05f0..a150327 100644
+--- a/password/ruby/tc_rules.rb
++++ b/password/ruby/tc_rules.rb
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ require_relative "rules"
+ require "test/unit"
+  
+diff --git a/password/scripts/test.sh b/password/scripts/test.sh
+index ef907ee..6dfc688 100755
+--- a/password/scripts/test.sh
++++ b/password/scripts/test.sh
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ export TIMEFORMAT=%R
+ echo "Building go executable"
+ go build -o password/perftest  password/go/perftest.go
+@@ -6,6 +19,6 @@ echo ""
+ echo "Executing ruby test"
+ time ruby password/ruby/perftest.rb $1 $2
+ echo "Executing php test"
+-time php password/php/perftest.php $1 $2
++time php password/php/perftest.php $1 $2 > /dev/null
+ echo "Executing go test"
+ time password/perftest -count=$1 -method=$2
+\ No newline at end of file
+diff --git a/textout/go/export.go b/textout/go/export.go
+index 1a956e1..caf5d45 100644
+--- a/textout/go/export.go
++++ b/textout/go/export.go
+@@ -1,3 +1,18 @@
++/*
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++*/
+ package main
+ 
+ import (
+diff --git a/textout/php/export.php b/textout/php/export.php
+index c7b81a9..0cf96cb 100644
+--- a/textout/php/export.php
++++ b/textout/php/export.php
+@@ -1,3 +1,18 @@
++<!-- 
++   Copyright 2015, Google, Inc.
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++ -->
+ <?php
+ 
+ if (defined('STDIN')) {
+diff --git a/textout/php/php.ini b/textout/php/php.ini
+index fe4813b..7ee9581 100644
+--- a/textout/php/php.ini
++++ b/textout/php/php.ini
+@@ -1,2 +1,15 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ variables_order = "EGPCS"
+ date.timezone = "America/Los_Angeles"
+\ No newline at end of file
+diff --git a/textout/scripts/test.sh b/textout/scripts/test.sh
+index 3350790..5107a64 100755
+--- a/textout/scripts/test.sh
++++ b/textout/scripts/test.sh
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ export TIMEFORMAT=%R
+ echo "Building go executable"
+ go build -o textout/export  textout/go/export.go
+@@ -11,7 +24,7 @@ rm -rf textout/output/go
+ echo ""
+ echo "Executing ruby test"
+ time ruby textout/ruby/export.rb $1
+-echo "Executing php test"
+-time php textout/php/export.php $1
++echo "Executing php test" 
++time php textout/php/export.php $1 > /dev/null
+ echo "Executing go test"
+ time textout/export -count=$1 
+\ No newline at end of file
+diff --git a/textout/sql/entries.sql b/textout/sql/entries.sql
+index 7b3a50c..447206d 100644
+--- a/textout/sql/entries.sql
++++ b/textout/sql/entries.sql
+@@ -1,3 +1,16 @@
++# Copyright 2015, Google, Inc.
++
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++
++#     http://www.apache.org/licenses/LICENSE-2.0
++
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
+ SELECT
+     p.post_title, 
+     p.post_excerpt, 
