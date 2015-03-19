@@ -14,4 +14,4 @@ time ruby textout/ruby/export.rb $1
 echo "Executing php test"
 time php textout/php/export.php $1
 echo "Executing go test"
-time textout/export $1 
+time textout/export -count=$1 

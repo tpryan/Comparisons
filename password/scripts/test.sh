@@ -8,4 +8,4 @@ time ruby password/ruby/perftest.rb $1 $2
 echo "Executing php test"
 time php password/php/perftest.php $1 $2
 echo "Executing go test"
-time password/perftest $1 $2
+time password/perftest -count=$1 -method=$2

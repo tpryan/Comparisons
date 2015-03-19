@@ -1,4 +1,4 @@
-package Rules
+package rules
 
 import (
 	"regexp"
@@ -6,19 +6,19 @@ import (
 )
 
 const (
-	MINIMUM_MATCH   = 4
-	MIN_LENGTH      = 8
-	MAX_LENGTH      = 24
-	SPECIAL         = "~!@#$%^&*"
-	SUCCESS         = "Password passes policy"
-	FAIL_EMPTY      = "No password given"
-	FAIL_UPPER      = "At least one UPPERCASE character is required."
-	FAIL_LOWER      = "At least one LOWERCASE character is required."
-	FAIL_NUMBER     = "At least one NUMERIC character is required."
-	FAIL_SPECIAL    = "At least one SPECIAL (~!@#$%^&*) character is required."
-	FAIL_DICTIONARY = "No dictionary words allowed."
-	FAIL_MIN        = "Password must be at least 8 characters long."
-	FAIL_MAX        = "Password must be no more than 24 characters long."
+	MinMatch       = 4
+	MinLength      = 8
+	MaxLen         = 24
+	Success        = "Password passes policy"
+	FailEmpty      = "No password given"
+	FailUpper      = "At least one UPPERCASE character is required."
+	FailLower      = "At least one LOWERCASE character is required."
+	FailNumber     = "At least one NUMERIC character is required."
+	FailSpecial    = "At least one SPECIAL (~!@#$%^&*) character is required."
+	FailDictionary = "No dictionary words allowed."
+	FailMin        = "Password must be at least 8 characters long."
+	FailMax        = "Password must be no more than 24 characters long."
+	FailError      = "Error in matchmode must be 'hash' or 'bruteforce'"
 )
 
 var (
@@ -37,59 +37,71 @@ type Result struct {
 	Word    string
 }
 
-func Validate(c string, m string) Result {
-	if len(c) == 0 {
-		return Result{false, FAIL_EMPTY, "FAIL_EMPTY", ""}
-	}
+var (
+	resultEmpty      = Result{false, FailEmpty, "FAIL_EMPTY", ""}
+	resultUpper      = Result{false, FailUpper, "FAIL_UPPER", ""}
+	resultLower      = Result{false, FailLower, "FAIL_LOWER", ""}
+	resultNumber     = Result{false, FailNumber, "FAIL_NUMBER", ""}
+	resultSpecial    = Result{false, FailSpecial, "FAIL_SPECIAL", ""}
+	resultDictionary = Result{false, FailDictionary, "FAIL_DICTIONARY", ""}
+	resultMin        = Result{false, FailMin, "FAIL_MIN", ""}
+	resultMax        = Result{false, FailMax, "FAIL_MAX", ""}
+	resultError      = Result{false, FailError, "FAIL_ERROR", ""}
+	resultSuccess    = Result{true, Success, "SUCCESS", ""}
+)
 
-	if len(c) < MIN_LENGTH {
-		return Result{false, FAIL_MIN, "FAIL_MIN", ""}
-	}
+type MatchMode string
 
-	if len(c) > MAX_LENGTH {
-		return Result{false, FAIL_MAX, "FAIL_MAX", ""}
-	}
+const (
+	Bruteforce MatchMode = "bruteforce"
+	Hash       MatchMode = "hash"
+)
 
-	if r := ur.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_UPPER, "FAIL_UPPER", ""}
-	}
-
-	if r := lr.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_LOWER, "FAIL_LOWER", ""}
-	}
-
-	if r := nr.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_NUMBER, "FAIL_NUMBER", ""}
-	}
-
-	if r := sr.FindStringIndex(c); r == nil {
-		return Result{false, FAIL_SPECIAL, "FAIL_SPECIAL", ""}
+func Validate(c string, m MatchMode) Result {
+	switch {
+	case len(c) == 0:
+		return resultEmpty
+	case len(c) < MinLength:
+		return resultMin
+	case len(c) > MaxLen:
+		return resultMax
+	case ur.FindStringIndex(c) != nil:
+		return resultUpper
+	case lr.FindStringIndex(c) != nil:
+		return resultLower
+	case nr.FindStringIndex(c) != nil:
+		return resultNumber
+	case sr.FindStringIndex(c) != nil:
+		return resultSpecial
 	}
 
 	w := ""
-	if m == "bruteforce" {
+	switch m {
+	case Bruteforce:
 		w = match(c)
-	} else {
+	case Hash:
 		w = hashMatch(c)
+	default:
+		return resultError
 	}
 
 	if w != "" {
-		return Result{false, FAIL_DICTIONARY, "FAIL_DICTIONARY", w}
+		r := resultDictionary
+		r.Word = w
+		return r
 	}
 
-	return Result{true, SUCCESS, "SUCCESS", ""}
+	return resultSuccess
 }
 
 func match(c string) string {
 	uc := strings.ToUpper(c)
 	for _, w := range dict {
 
-		if len(w) < MINIMUM_MATCH {
+		if l := len(w); l < MinMatch || l > len(c) {
 			continue
 		}
-		if len(w) > len(c) {
-			continue
-		}
+
 		if strings.Index(uc, w) >= 0 {
 			return w
 		}
@@ -99,21 +111,23 @@ func match(c string) string {
 }
 
 func hashMatch(c string) string {
-	hmap := breakString(c, MINIMUM_MATCH)
+	hmap := breakString(c, MinMatch)
 
 	for k := range hmap {
-		if _, ok := dictmap[k]; ok {
+		if dictmap[k] {
 			return k
 		}
 	}
 	return ""
 }
 
-func breakString(s string, m int) map[string]int {
-	res := make(map[string]int)
+// breakstring breaks a string into all substrings with a length
+// greater than min, returning ...
+func breakString(s string, min int) map[string]bool {
+	res := make(map[string]bool)
 	ln := len(s)
-	for i := m; i <= ln; i++ {
-		for j := 0; j < (ln - m); j++ {
+	for i := min; i <= ln; i++ {
+		for j := 0; j < (ln - min); j++ {
 
 			if i+j > ln {
 				continue
@@ -122,7 +136,7 @@ func breakString(s string, m int) map[string]int {
 			p := strings.ToUpper(s[j : i+j])
 
 			if len(p) >= i {
-				res[p] = 0
+				res[p] = true
 			}
 		}
 	}

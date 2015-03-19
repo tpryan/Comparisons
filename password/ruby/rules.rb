@@ -21,20 +21,20 @@ class Rules
     @dicthash = {}
 
     Dict::DICT.each do |word| 
-      @dicthash[word] = 0
+      @dicthash[word] = true
     end
   end
 
   def break_string(str,min)
     res = {}
     len = str.length
+    upstr = str.upcase
+    last_start = len-min
 
-    for i in min..len
-      for j in 0..(len-min)
-        part = str[j,i].upcase
-        if part.length >=i 
+    (min..len).each do |i|
+      (0..last_start).each do |j|
+        part = upstr[j,i].upcase
           res[part]=0
-        end
       end  
     end  
     res.keys
@@ -43,9 +43,7 @@ class Rules
   def hashMatch(candidate)
     arr = break_string(candidate,MINIMUM_MATCH)
     arr.each do |part|
-      if @dicthash.has_key?(part) 
-        return part
-      end
+      return part if @dicthash[part] 
     end
     ""
   end  
@@ -84,19 +82,19 @@ class Rules
       return Result.new(false, FAIL_MAX, "FAIL_MAX", "")
     end
 
-    if !(candidate =~ /[A-Z]/)
+    unless candidate =~ /[A-Z]/
      return Result.new(false, FAIL_UPPER, "FAIL_UPPER", "")
     end
 
-    if !(candidate =~ /[a-z]/)
+    unless candidate =~ /[a-z]/
      return Result.new(false, FAIL_LOWER, "FAIL_LOWER", "")
     end
 
-    if !(candidate =~ /[0-9]/)
+    unless candidate =~ /[0-9]/
       return Result.new(false, FAIL_NUMBER, "FAIL_NUMBER", "")
     end
 
-    if !(candidate =~ /[#{SPECIAL}]/)
+    unless candidate =~ /[#{SPECIAL}]/
        return Result.new(false, FAIL_SPECIAL, "FAIL_SPECIAL", "")
     end  
 
